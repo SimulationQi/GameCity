@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽奖页面</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        #intro-gif-container,
+        .lottery-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .result-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;
+            z-index: 999;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        if (!isWeiXin()) {
+            document.body.innerHTML = '<h1 style="text-align: center;">请在微信内打开此页面参与抽奖活动！</h1>';
+            return;
+        }
+
+        function isWeiXin() {
+            return /MicroMessenger/i.test(navigator.userAgent);
+        }
+    </script>
+    
+    <!-- 抽奖GIF部分 -->
+    <div id="intro-gif-container">
+        <img id="intro-gif" src="dog.gif" onload="onGifLoaded()" alt="抽奖GIF">
+    </div>
+
+    <!-- 抽奖结果弹窗区域 -->
+    <div class="result-popup" id="result-popup" onclick="closePopup()">
+        <h2>恭喜您，抽中了：</h2>
+        <p id="result-text"></p>
+    </div>
+
+    <script>
+        const prizes = ['一等奖', '二等奖', '三等奖'];
+        let winnerIndex;
+
+        function onGifLoaded() {
+            setTimeout(showResult, 2000); // GIF加载完后等待2秒显示抽奖结果
+        }
+
+        function showResult() {
+            document.getElementById('intro-gif-container').style.display = 'none';
+
+            // 随机选择一个奖项
+            winnerIndex = Math.floor(Math.random() * prizes.length);
+
+            // 设置弹窗内容
+            const resultText = document.getElementById('result-text');
+            resultText.textContent = prizes[winnerIndex];
+
+            // 显示弹窗
+            document.getElementById('result-popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('result-popup').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
