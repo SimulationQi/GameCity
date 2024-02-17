@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽奖页面</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #container {
+            position: relative;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        #audio {
+            display: none;
+        }
+        #result {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            text-align: center;
+            z-index: 999;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img src="gifAndmp3/gamecity1.gif" alt="抽奖GIF图">
+        <audio id="audio" src="gifAndmp3/bgm.MP3" autoplay></audio>
+        <div id="result">恭喜你获得一号盲盒！</div>
+    </div>
+    <script>
+        setTimeout(function() {
+            document.querySelector('img').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+        }, 18000);
+    </script>
+</body>
+</html>
