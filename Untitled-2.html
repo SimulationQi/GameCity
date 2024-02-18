@@ -51,20 +51,33 @@
         <div id="result">恭喜你获得奖品！</div>
     </div>
     <script>
-        function autoPlayAudio() {
-            wx.config({
-                 wx.ready
-                debug: false
-                , appId: ''
-                , timestamp: 1
-                , nonceStr: ''
-                , signature: ''
-                , jsApiList: []
-            });
-        }
-        $(document).ready(function(){
-        autoPlayMusic();
-        audioAutoPlay();
+    //     function autoPlayAudio() {
+    //         wx.config({
+    //              wx.ready
+    //             debug: false
+    //             , appId: ''
+    //             , timestamp: 1
+    //             , nonceStr: ''
+    //             , signature: ''
+    //             , jsApiList: []
+    //         });
+    //     }
+    //     $(document).ready(function(){
+    //     autoPlayMusic();
+    //     audioAutoPlay();
+    // });
+
+    wx.config({
+    // 配置信息, 即使不正确也能使用 wx.ready
+    debug: false,
+    appId: '',
+    timestamp: 1,
+    nonceStr: '',
+    signature: '',
+    jsApiList: []
+    });
+    wx.ready(function() {
+    document.getElementById('audio').play();
     });
     function audioAutoPlay() {
         var audio = document.getElementById('audio');
@@ -78,9 +91,11 @@
         // 自动播放音乐效果，解决浏览器或者APP自动播放问题
         function musicInBrowserHandler() {
             musicPlay(true);
-            document.body.removeEventListener('touchstart', musicInBrowserHandler);
+            document.addEventListener("WeixinJSBridgeReady", function () {
+            musicPlay(true);
+        }, false);
         }
-        document.body.addEventListener('touchstart', musicInBrowserHandler);
+        // document.body.addEventListener('touchstart', musicInBrowserHandler);
         // 自动播放音乐效果，解决微信自动播放问题
         function musicInWeixinHandler() {
             musicPlay(true);
