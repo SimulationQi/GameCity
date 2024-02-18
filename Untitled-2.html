@@ -51,76 +51,53 @@
         <div id="result">恭喜你获得奖品！</div>
     </div>
     <script>
-    //     function autoPlayAudio() {
-    //         wx.config({
-    //              wx.ready
-    //             debug: false
-    //             , appId: ''
-    //             , timestamp: 1
-    //             , nonceStr: ''
-    //             , signature: ''
-    //             , jsApiList: []
-    //         });
-    //     }
-    //     $(document).ready(function(){
-    //     autoPlayMusic();
-    //     audioAutoPlay();
-    // });
-
-    wx.config({
-    // 配置信息, 即使不正确也能使用 wx.ready
+    // 假设您已经从服务器获取了正确的微信JS-SDK配置信息
+var wxConfig = {
     debug: false,
-    appId: '',
-    timestamp: 1,
-    nonceStr: '',
-    signature: '',
-    jsApiList: []
-    });
-    wx.ready(function() {
-    document.getElementById('audio').play();
-    });
-    function audioAutoPlay() {
-        var audio = document.getElementById('audio');
+    appId: 'wx30142f715391a187', // 替换为你的微信公众号appid
+    timestamp: 'yourTimestamp', // 替换为你从服务器获取的timestamp
+    nonceStr: 'your-nonce-str', // 替换为你从服务器生成的nonceStr
+    signature: 'your-signature', // 替换为你从服务器生成的签名signature
+    jsApiList: ['onMenuShareAppMessage', 'onWXReady'] // 添加'onWXReady'到需要使用的JS接口列表
+};
+
+wx.config(wxConfig);
+
+// 微信JS-SDK准备就绪后执行音频播放
+wx.ready(function() {
+    audioAutoPlay();
+});
+
+// 定义一个函数用于处理微信内音频自动播放
+function audioAutoPlay() {
+    var audio = document.getElementById('audio');
+
+    // 监听WeixinJSBridgeReady事件，在微信内直接尝试播放音频
+    if (typeof WeixinJSBridge === 'object' && typeof WeixinJSBridge.invoke === 'function') {
         audio.play();
+    } else {
         document.addEventListener("WeixinJSBridgeReady", function () {
             audio.play();
         }, false);
     }
-    // 音乐播放
-    function autoPlayMusic() {
-        // 自动播放音乐效果，解决浏览器或者APP自动播放问题
-        function musicInBrowserHandler() {
-            musicPlay(true);
-            document.addEventListener("WeixinJSBridgeReady", function () {
-            musicPlay(true);
-        }, false);
-        }
-        // document.body.addEventListener('touchstart', musicInBrowserHandler);
-        // 自动播放音乐效果，解决微信自动播放问题
-        function musicInWeixinHandler() {
-            musicPlay(true);
-            document.addEventListener("WeixinJSBridgeReady", function () {
-                musicPlay(true);
-            }, false);
-            document.removeEventListener('DOMContentLoaded', musicInWeixinHandler);
-        }
-        document.addEventListener('DOMContentLoaded', musicInWeixinHandler);
-    }
-    function musicPlay(isPlay) {
-        var media = document.querySelector('#audio');
-        if (isPlay && media.paused) {
-            media.play();
-        }
-        if (!isPlay && !media.paused) {
-            media.pause();
-        }
-    }
-        setTimeout(function() {
-            document.querySelector('img').style.display = 'none';
-            document.getElementById('result').style.display = 'block';
-        }, 19000);
+}
 
+// 音乐播放/暂停控制函数（保留原功能不变）
+function musicPlay(isPlay) {
+    var media = document.querySelector('#audio');
+    if (isPlay && media.paused) {
+        media.play();
+    }
+    if (!isPlay && !media.paused) {
+        media.pause();
+    }
+}
 
+// 保持原有逻辑：19秒后隐藏GIF图并显示抽奖结果
+setTimeout(function() {
+    document.querySelector('img').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+}, 19000);
     </script>
 </body>
 </html>
