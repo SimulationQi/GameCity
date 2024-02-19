@@ -68,7 +68,7 @@
 <body>
     <div class="overlay">
         <div class="modal">
-            <img src="gifAndmp3/前.jpg" alt="抽奖动图" class="gif-container" id="drawGif">
+            <img src="gifAndmp3/前.jpg"  class="gif-container" id="drawGif">
             <audio class="audio-player" src="gifAndmp3/bgm.MP3" preload="auto" loop></audio>
             <button class="start-button" id="startDraw">开始抽奖</button>
             <div class="result" id="drawResult"></div>
@@ -86,7 +86,7 @@
             startButton.addEventListener('click', function() {
                 audio.play();
                 this.style.display = 'none'; // 隐藏开始按钮
-                drawGif.src = "gifAndmp3/gamecity1.gif"; // 更换为抽奖进行中的动图
+                drawGif.src = "gifAndmp3/币20.gif"; // 更换为抽奖进行中的动图
                 drawGif.style.display = 'block'; // 显示新的动图
 
                 setTimeout(() => {
