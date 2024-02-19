@@ -3,35 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>抽奖页面</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js" type="text/javascript"></script>
-
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+            z-index: 999;
         }
-        #container {
-            position: relative;
+        .modal {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
             text-align: center;
+            max-width: 700px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
         }
-        img {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            object-fit: cover;
+        .gif-container {
+            margin-bottom: 2rem;
+            max-width: 100%;
+            height: auto;
         }
-        #audio {
+        .audio-player {
             display: none;
         }
-        #result {
+        .result {
             display: none;
             position: fixed;
             top: 50%;
@@ -45,62 +50,54 @@
             z-index: 999;
             width: 300px;
         }
+        .start-button {
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            background-color: #007bff;
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .start-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div id="container">
-        <img src="gifAndmp3/gamecity1.gif" alt="抽奖GIF图">
-        <audio id="audio" src="gifAndmp3/bgm.MP3" autoplay></audio>
-        <div id="result">恭喜你获得奖品！</div>
+    <div class="overlay">
+        <div class="modal">
+            <img src="gifAndmp3/前.jpg" alt="抽奖动图" class="gif-container" id="drawGif">
+            <audio class="audio-player" src="gifAndmp3/bgm.MP3" preload="auto" loop></audio>
+            <button class="start-button" id="startDraw">开始抽奖</button>
+            <div class="result" id="drawResult"></div>
+        </div>
     </div>
+
     <script>
-    // 假设您已经从服务器获取了正确的微信JS-SDK配置信息
-var wxConfig = {
-    debug: false,
-    appId: 'wx30142f715391a187', // 替换为你的微信公众号appid
-    timestamp: 'yourTimestamp', // 替换为你从服务器获取的timestamp
-    nonceStr: 'your-nonce-str', // 替换为你从服务器生成的nonceStr
-    signature: 'your-signature', // 替换为你从服务器生成的签名signature
-    jsApiList: ['onMenuShareAppMessage', 'onWXReady'] // 添加'onWXReady'到需要使用的JS接口列表
-};
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.querySelector('.audio-player');
+            const startButton = document.getElementById('startDraw');
+            const resultDiv = document.getElementById('drawResult');
+            const drawGif = document.getElementById('drawGif');
 
-wx.config(wxConfig);
+            // 添加点击事件，播放音乐并更换动图
+            startButton.addEventListener('click', function() {
+                audio.play();
+                this.style.display = 'none'; // 隐藏开始按钮
+                drawGif.src = "gifAndmp3/gamecity1.gif"; // 更换为抽奖进行中的动图
+                drawGif.style.display = 'block'; // 显示新的动图
 
-// 微信JS-SDK准备就绪后执行音频播放
-wx.ready(function() {
-    audioAutoPlay();
-});
-
-// 定义一个函数用于处理微信内音频自动播放
-function audioAutoPlay() {
-    var audio = document.getElementById('audio');
-
-    // 监听WeixinJSBridgeReady事件，在微信内直接尝试播放音频
-    if (typeof WeixinJSBridge === 'object' && typeof WeixinJSBridge.invoke === 'function') {
-        audio.play();
-    } else {
-        document.addEventListener("WeixinJSBridgeReady", function () {
-            audio.play();
-        }, false);
-    }
-}
-
-// 音乐播放/暂停控制函数（保留原功能不变）
-function musicPlay(isPlay) {
-    var media = document.querySelector('#audio');
-    if (isPlay && media.paused) {
-        media.play();
-    }
-    if (!isPlay && !media.paused) {
-        media.pause();
-    }
-}
-
-// 保持原有逻辑：19秒后隐藏GIF图并显示抽奖结果
-setTimeout(function() {
-    document.querySelector('img').style.display = 'none';
-    document.getElementById('result').style.display = 'block';
-}, 19000);
+                setTimeout(() => {
+                    audio.pause(); // 19秒后暂停音乐
+                    drawGif.src = ""; // 清空动图源（可选，根据需要决定是否隐藏或清空）
+                    drawGif.style.display = 'none'; // 动图消失
+                    resultDiv.innerText = "恭喜您获得一等奖！"; // 显示预设的抽奖结果
+                    resultDiv.style.display = 'block';
+                }, 19000);
+            });
+        });
     </script>
 </body>
 </html>
