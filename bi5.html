@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽奖页面</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5; /* 添加背景颜色 */
+        }
+        #drawGif {
+            display: block;
+        }
+        #resultModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center; /* 使得恭喜信息居中对齐 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 抽奖动图水平垂直居中 -->
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <img id="drawGif" src="gifAndmp3/币5.gif" alt="抽奖进行中">
+        
+    </div>
+
+    <!-- 结果弹框 -->
+    <div id="resultModal">
+        <h2>恭喜您！您抽到了5号奖品！</h2>
+        
+    </div>
+
+    <script>
+        document.getElementById('drawGif').addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('drawGif').style.display = 'none';
+                document.getElementById('resultModal').style.display = 'block';
+            }, 19000); // 模拟19秒后出现结果
+        });
+    </script>
+</body>
+</html>
+
+
+
